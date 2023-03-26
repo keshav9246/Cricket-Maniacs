@@ -105,6 +105,10 @@ public class ScoresService {
         if (wickets > 0) {
             wicketPoints += wickets * 25;
         }
+        if(wickets >= 5)
+        {
+        	bowling_bonus += 25;
+        }
 
 
         totalBowlingPoints = wicketPoints + bowling_bonus;

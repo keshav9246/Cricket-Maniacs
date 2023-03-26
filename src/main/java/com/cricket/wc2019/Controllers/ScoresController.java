@@ -1,6 +1,8 @@
 package com.cricket.wc2019.Controllers;
 
+import com.cricket.wc2019.Models.DailyScores;
 import com.cricket.wc2019.Models.Scores;
+import com.cricket.wc2019.Services.DailyScoreService;
 import com.cricket.wc2019.Services.ManiacService;
 import com.cricket.wc2019.Services.PlayerService;
 import com.cricket.wc2019.Services.ScoresService;
@@ -10,10 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,6 +35,10 @@ public class ScoresController {
 
     @Autowired
     Scores score;
+    
+    @Autowired
+    DailyScoreService dService;
+    
 
 
     @PostMapping("/scoreUpdate")
@@ -46,9 +55,12 @@ public class ScoresController {
 
 
                 pService.addPlayerScore(score.getTotal_match_score(), playername);
-
+                
+                dService.addDailyScore(score.getTotal_match_score(), playername);
+                
 
         ModelAndView mv = new ModelAndView("admin", "scores", score);
+        //mv.addObject("onlyScores", onlyScore);
 
             return mv;
 
@@ -71,5 +83,28 @@ public class ScoresController {
         ModelAndView mv = new ModelAndView("scores", "scoreList", scoreList);
         return mv;
     }
+
+    
+    @RequestMapping(value="/onlyScores", method=RequestMethod.GET)
+    public Model getOnlyScore(@RequestParam("player") String player)
+    {
+    	
+    	System.out.println("CHALO BHIA>>> HUA CALLL  +"+player +"+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+       // List<Scores> scoreList = service.getAllScores();
+        List<Integer> onlyScore = new ArrayList<Integer>();
+        onlyScore = dService.getOnlyScores(player);
+
+
+        if(onlyScore.equals(null))
+        {
+        	onlyScore.add(0);
+        }
+        
+        Model mv = null;
+        mv.addAttribute(onlyScore);
+        return mv;
+    }
+    
+    
 
 }

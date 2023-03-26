@@ -24,9 +24,6 @@ public class ManiacService {
     
     public void submitTeam(List<Player> players, String orange, String purple, String maniac)
     {
-
-
-
         team.setManiac_name(maniac);
         team.setOrange_cap(orange);
         team.setPurple_cap(purple);

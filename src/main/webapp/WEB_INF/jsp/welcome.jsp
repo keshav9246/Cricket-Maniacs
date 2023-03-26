@@ -8,6 +8,13 @@
 
 
 <html>
+<!-- <script type="text/javascript">
+
+    page.onload = function submitForm() {
+        document.getElementById("player").submit();
+    }
+</script> -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +31,7 @@
 
 
 </head>
-<body>
+<body onload="document.forms['player'].submit()">
 <div class="container">
 
 
@@ -38,7 +45,7 @@
 
         <a href="#" class="brand-logo center">Cricket Maniacs</a>
         <ul class="right">
-                <li><a href="/scores" class="white-text darken-4">Scores</a></li>
+                <li><a href="/scores" class="white-text darken-4">All Scores</a></li>
 
             </ul>
 
@@ -55,7 +62,7 @@
             <div class="col s12">
 
 
-                <h4>Aao ${user.name}</h4>
+                <h4>Aao Bhosdikey ${user.name}</h4>
             <div class="row">
                 <div class="col s12 m6">
                     <div class="card blue-grey darken-1">
@@ -106,16 +113,24 @@
         <th>Role</th>
         <th>Score</th>
         <th>Country</th>
+        <th>Scores List</th>
     </tr>
     </thead>
 
     <tbody>
 	<c:forEach items="${maniac.team}" var="player">
         <tr>
+        	<td>  <c:out value="${player.teamname}"/></td> 
             <td> <c:out value="${player.playername}"/></td>
-            <td>  <c:out value="${player.playerrole}"/></td>
             <td>  <c:out value="${player.playerscore}"/></td>
-            <td>  <c:out value="${player.teamname}"/></td>    
+            <td>  <c:out value="${player.playerrole}"/></td>
+            <td>
+
+                <form id = "player" action="/onlyScores" method = "Get">
+                    <input type="hidden" name = "player" value="${player.playername}">
+                </form>
+                <c:out value="${onlyScore[0]}"/>
+        </td>
         </tr>
 
 
